@@ -38,11 +38,9 @@ Temp/
 appsettings.Development.json
 secrets.json
 
-# Но сохраняем важные конфиги и скрипты (они уже в репозитории)
-# config.xml - сохраняем (это шаблон)
-# scripts/*.bat - сохраняем
-# scripts/*.ps1 - сохраняем
-# Directory.Build.props - сохраняем
+# Сохраняем важные конфиги и скрипты
+!config.xml
+!Directory.Build.props
 
 # Test results
 TestResults/
