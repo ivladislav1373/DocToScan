@@ -34,7 +34,10 @@ internal class Program
         // Инициализация логгера
         _logger = new ConsoleLogger();
 
-        _logger.Info("DocToScan v1.0 - Преобразование документов в \"скан-копии\"");
+        // Проверка наличия pdfium.dll
+        CheckPdfiumLibrary();
+
+        _logger.Info("DocToScan - Преобразование документов в \"скан-копии\"");
         _logger.Separator();
 
         try
@@ -210,18 +213,23 @@ internal class Program
     /// </summary>
     private static Assembly FindOfficeAssembly(string assemblyName)
     {
+        // Вместо Assembly.GetExecutingAssembly().Location используем AppContext.BaseDirectory
+        string appDirectory = AppContext.BaseDirectory;
+
         string[] searchPaths = new[]
         {
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-            @"C:\Program Files\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\OFFICE16",
-            @"C:\Program Files (x86)\Microsoft Office\root\vfs\ProgramFilesCommonX86\Microsoft Shared\OFFICE16",
-            @"C:\Program Files\Microsoft Office\Office16",
-            @"C:\Program Files (x86)\Microsoft Office\Office16",
-            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + @"\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\OFFICE16",
-            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Microsoft Office\root\vfs\ProgramFilesCommonX86\Microsoft Shared\OFFICE16",
-            @"C:\Program Files\Common Files\Microsoft Shared\OFFICE16",
-            @"C:\Program Files (x86)\Common Files\Microsoft Shared\OFFICE16"
-        };
+        appDirectory,  // <- используем BaseDirectory вместо Location
+        Path.Combine(appDirectory, "x64"),
+        Path.Combine(appDirectory, "runtimes", "win-x64", "native"),
+        @"C:\Program Files\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\OFFICE16",
+        @"C:\Program Files (x86)\Microsoft Office\root\vfs\ProgramFilesCommonX86\Microsoft Shared\OFFICE16",
+        @"C:\Program Files\Microsoft Office\Office16",
+        @"C:\Program Files (x86)\Microsoft Office\Office16",
+        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + @"\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\OFFICE16",
+        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Microsoft Office\root\vfs\ProgramFilesCommonX86\Microsoft Shared\OFFICE16",
+        @"C:\Program Files\Common Files\Microsoft Shared\OFFICE16",
+        @"C:\Program Files (x86)\Common Files\Microsoft Shared\OFFICE16"
+    };
 
         string[] searchPatterns = new[]
         {
@@ -422,6 +430,33 @@ internal class Program
             .Where(arg => !arg.StartsWith("/") && !arg.StartsWith("-"))
             .Where(File.Exists)
             .ToList();
+    }
+
+    private static void CheckPdfiumLibrary()
+    {
+        string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+        string[] possiblePaths =
+        [
+            Path.Combine(currentDir, "pdfium.dll"),
+            Path.Combine(currentDir, "x64", "pdfium.dll"),
+            Path.Combine(currentDir, "runtimes", "win-x64", "native", "pdfium.dll")
+        ];
+
+        bool found = false;
+        foreach (string path in possiblePaths)
+        {
+            if (File.Exists(path))
+            {
+                _logger.Debug($"Найдена pdfium.dll: {path}");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            _logger.Warning("pdfium.dll не найдена! Функциональность PDF может не работать.");
+        }
     }
 
     /// <summary>
