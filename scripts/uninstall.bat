@@ -1,24 +1,35 @@
-@echo off
+﻿@echo off
 chcp 65001 > nul
 title DocToScan - Удаление
 color 0F
 
+:: Запрос прав администратора
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ════════════════════════════════════════════
+    echo       ТРЕБУЮТСЯ ПРАВА АДМИНИСТРАТОРА
+    echo ════════════════════════════════════════════
+    echo.
+    echo Для удаления интеграции из контекстного меню
+    echo необходимы права администратора.
+    echo.
+    echo Запуск от имени администратора...
+    echo.
+
+    :: Создаём временный VBS скрипт для запуска с правами администратора
+    set "tempVbs=%temp%\getAdmin.vbs"
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%tempVbs%"
+    echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%tempVbs%"
+    "%tempVbs%"
+    del "%tempVbs%"
+    exit /b
+)
+
+:: Если дошли до сюда - права администратора есть
 echo ════════════════════════════════════════════
 echo    DocToScan - Удаление интеграции
 echo ════════════════════════════════════════════
 echo.
-
-:: Проверка прав администратора
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [✗] Ошибка: Недостаточно прав!
-    echo.
-    echo Для удаления необходимы права администратора.
-    echo Запустите этот файл от имени администратора.
-    echo.
-    pause
-    exit /b 1
-)
 
 echo [✓] Права администратора получены
 
@@ -50,7 +61,9 @@ if exist "%EXE_PATH%" (
 :: Удаление из PATH
 echo.
 echo Удаление из PATH...
-setx PATH "%PATH:;%SCRIPT_DIR%=%" /M >nul 2>&1
+for /f "tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path 2^>nul') do set "systemPath=%%b"
+set "newPath=%systemPath:;%SCRIPT_DIR%=%"
+setx PATH "%newPath%" /M >nul 2>&1
 
 :: Вопрос о сохранении данных
 echo.
@@ -76,17 +89,28 @@ set /p delete_exe="Удалить файлы программы? (д/н): "
 if /i "%delete_exe%"=="д" (
     echo.
     echo Удаление файлов программы...
+    
+    :: Удаляем exe
     if exist "%EXE_PATH%" del /f /q "%EXE_PATH%"
     
-    :: Удаление других файлов
-    for %%f in ("%SCRIPT_DIR%*.dll" "%SCRIPT_DIR%*.pdb") do (
+    :: Удаляем все DLL и другие файлы
+    for %%f in ("%SCRIPT_DIR%*.dll" "%SCRIPT_DIR%*.pdb" "%SCRIPT_DIR%*.ico" "%SCRIPT_DIR%*.xml") do (
         if exist "%%f" del /f /q "%%f"
     )
     
-    :: Удаление самого uninstall.bat
-    del /f /q "%SCRIPT_DIR%uninstall.bat"
+    :: Удаляем папки x64 и runtimes если они есть
+    if exist "%SCRIPT_DIR%x64" rmdir /s /q "%SCRIPT_DIR%x64"
+    if exist "%SCRIPT_DIR%runtimes" rmdir /s /q "%SCRIPT_DIR%runtimes"
     
     echo [✓] Файлы программы удалены
+    
+    :: Вопрос об удалении самого uninstall.bat
+    echo.
+    set /p delete_self="Удалить также этот скрипт (uninstall.bat)? (д/н): "
+    if /i "%delete_self%"=="д" (
+        del /f /q "%~f0"
+        echo [✓] uninstall.bat будет удалён после закрытия
+    )
 )
 
 echo.
@@ -97,4 +121,11 @@ echo.
 echo ✓ Интеграция удалена из системы
 echo ✓ Записи реестра очищены
 echo.
-pause
+
+if "%delete_self%"=="д" (
+    echo Скрипт самоудалится через 2 секунды...
+    ping -n 3 127.0.0.1 > nul
+    del /f /q "%~f0"
+) else (
+    pause
+)
