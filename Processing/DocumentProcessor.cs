@@ -198,11 +198,11 @@ public class DocumentProcessor : IDisposable
     {
         _logger.Info("  • Сохранение результата...");
 
-        var options = new PdfGenerationOptions
-        {
-            JpegQuality = _config.ImageQuality.JpegCompression,
-            DocumentTitle = Path.GetFileNameWithoutExtension(outputPath)
-        };
+        // Создаём опции на основе конфигурации
+        var options = PdfGenerationOptions.FromConfig(
+            _config,
+            Path.GetFileNameWithoutExtension(outputPath)
+        );
 
         using (var builder = new PdfBuilder(_logger, options))
         {

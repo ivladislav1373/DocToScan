@@ -40,7 +40,19 @@ public class PdfBuilder : IDisposable
         _document = new PdfDocument();
         _resources = new List<IDisposable>();
 
-        _logger.Debug("PDF builder инициализирован");
+        // Настройка метаданных из опций
+        _document.Info.Title = _options.DocumentTitle ?? "Скан-копия";
+        _document.Info.Author = _options.Author ?? "DocToScan";
+        _document.Info.Creator = _options.Creator ?? "DocToScan";
+        _document.Info.Keywords = _options.Keywords ?? "scan, pdf";
+        _document.Info.Subject = _options.Subject ?? "Отсканированный документ";
+
+        if (_options.AddCreationDate)
+        {
+            _document.Info.CreationDate = DateTime.Now;
+        }
+
+        _logger.Debug($"PDF builder инициализирован с метаданными: Автор='{_options.Author}', Заголовок='{_options.DocumentTitle}'");
     }
 
     /// <summary>
@@ -156,12 +168,6 @@ public class PdfBuilder : IDisposable
         {
             _logger.Debug($"Сохранение PDF в файл: {outputPath}");
             _logger.Info($"    Страниц в документе: {_document.PageCount}");
-
-            // Настройка метаданных документа
-            _document.Info.Title = _options.DocumentTitle ?? "Скан-копия документа";
-            _document.Info.Author = _options.Author ?? "DocToScan";
-            _document.Info.Creator = "DocToScan v1.0";
-            _document.Info.Keywords = _options.Keywords ?? "scan, pdf, document";
 
             _document.Save(outputPath);
 

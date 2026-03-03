@@ -40,6 +40,12 @@ public class Config
     public PageSizeSettings PageSize { get; set; } = new();
 
     /// <summary>
+    /// Настройки PDF документа
+    /// </summary>
+    [XmlElement("PdfMetadata")]
+    public PdfMetadataSettings PdfMetadata { get; set; } = new();
+
+    /// <summary>
     /// Настройки яркости изображения.
     /// </summary>
     public class BrightnessSettings
@@ -168,6 +174,43 @@ public class Config
             }
         }
     }
+
+    /// <summary>
+    /// Настройки метаданных PDF
+    /// </summary>
+    public class PdfMetadataSettings
+    {
+        /// <summary>
+        /// Автор документа
+        /// </summary>
+        public string Author { get; set; } = "Vlad";
+
+        /// <summary>
+        /// Название программы-создателя
+        /// </summary>
+        public string Creator { get; set; } = "PDFshark";
+
+        /// <summary>
+        /// Ключевые слова по умолчанию
+        /// </summary>
+        public string Keywords { get; set; } = "scan, pdf, document";
+
+        /// <summary>
+        /// Тема документа
+        /// </summary>
+        public string Subject { get; set; } = "Отсканированный документ";
+
+        /// <summary>
+        /// Добавлять дату создания
+        /// </summary>
+        public bool AddCreationDate { get; set; } = true;
+
+        /// <summary>
+        /// Сжимать содержимое
+        /// </summary>
+        public bool CompressContent { get; set; } = true;
+    }
+
 
     /// <summary>
     /// Поддерживаемые форматы страниц

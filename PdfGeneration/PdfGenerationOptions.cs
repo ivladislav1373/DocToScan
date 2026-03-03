@@ -1,4 +1,4 @@
-﻿using System;
+﻿using DocToScan.Configuration;
 
 namespace DocToScan.PdfGeneration;
 
@@ -8,111 +8,60 @@ namespace DocToScan.PdfGeneration;
 public class PdfGenerationOptions
 {
     /// <summary>
-    /// Получает или задает качество JPEG сжатия для изображений.
-    /// Значение от 1 (низкое качество, малый размер) до 100 (максимальное качество, большой размер).
+    /// Качество JPEG сжатия (1-100)
     /// </summary>
     public int JpegQuality { get; set; } = 85;
 
     /// <summary>
-    /// Получает или задает название документа, которое будет сохранено в метаданных PDF.
+    /// Название документа
     /// </summary>
     public string DocumentTitle { get; set; }
 
     /// <summary>
-    /// Получает или задает автора документа в метаданных PDF.
+    /// Автор документа
     /// </summary>
-    public string Author { get; set; } = "DocToScan";
+    public string Author { get; set; }
 
     /// <summary>
-    /// Получает или задает ключевые слова для поиска документа.
+    /// Создатель документа
     /// </summary>
-    public string Keywords { get; set; } = "scan, pdf";
+    public string Creator { get; set; }
 
     /// <summary>
-    /// Получает или задает значение, указывающее, нужно ли сжимать текстовые объекты в PDF.
+    /// Ключевые слова
     /// </summary>
-    public bool CompressContent { get; set; } = true;
+    public string Keywords { get; set; }
 
     /// <summary>
-    /// Получает или задает значение, указывающее, нужно ли добавлять метку времени создания.
+    /// Тема документа
+    /// </summary>
+    public string Subject { get; set; }
+
+    /// <summary>
+    /// Добавлять дату создания
     /// </summary>
     public bool AddCreationDate { get; set; } = true;
 
     /// <summary>
-    /// Получает или задает уровень защиты PDF документа.
+    /// Сжимать содержимое
     /// </summary>
-    public SecurityLevel SecurityLevel { get; set; } = SecurityLevel.None;
+    public bool CompressContent { get; set; } = true;
 
     /// <summary>
-    /// Получает или задает пароль для открытия документа (если требуется защита).
+    /// Создаёт опции на основе конфигурации
     /// </summary>
-    public string UserPassword { get; set; }
-
-    /// <summary>
-    /// Получает или задает пароль владельца для изменения прав доступа.
-    /// </summary>
-    public string OwnerPassword { get; set; }
-
-    /// <summary>
-    /// Получает или задает разрешенные действия для защищенного документа.
-    /// </summary>
-    public PermittedActions PermittedActions { get; set; } = PermittedActions.All;
-}
-
-/// <summary>
-/// Определяет уровень безопасности PDF документа.
-/// </summary>
-public enum SecurityLevel
-{
-    /// <summary>
-    /// Без защиты.
-    /// </summary>
-    None,
-
-    /// <summary>
-    /// Защита 40-битным RC4 шифрованием (совместимость с PDF 1.3).
-    /// </summary>
-    Low,
-
-    /// <summary>
-    /// Защита 128-битным AES шифрованием (рекомендуется).
-    /// </summary>
-    High
-}
-
-/// <summary>
-/// Определяет разрешенные действия для защищенного PDF документа.
-/// </summary>
-[Flags]
-public enum PermittedActions
-{
-    /// <summary>
-    /// Нет разрешений.
-    /// </summary>
-    None = 0,
-
-    /// <summary>
-    /// Разрешена печать документа.
-    /// </summary>
-    Print = 1,
-
-    /// <summary>
-    /// Разрешено модифицировать содержимое.
-    /// </summary>
-    ModifyContent = 2,
-
-    /// <summary>
-    /// Разрешено копировать текст и графику.
-    /// </summary>
-    CopyContent = 4,
-
-    /// <summary>
-    /// Разрешено добавлять или изменять аннотации.
-    /// </summary>
-    ModifyAnnotations = 8,
-
-    /// <summary>
-    /// Все разрешения.
-    /// </summary>
-    All = Print | ModifyContent | CopyContent | ModifyAnnotations
+    public static PdfGenerationOptions FromConfig(Config config, string documentTitle = null)
+    {
+        return new PdfGenerationOptions
+        {
+            JpegQuality = config.ImageQuality.JpegCompression,
+            DocumentTitle = documentTitle ?? "Скан-копия документа",
+            Author = config.PdfMetadata.Author,
+            Creator = config.PdfMetadata.Creator,
+            Keywords = config.PdfMetadata.Keywords,
+            Subject = config.PdfMetadata.Subject,
+            AddCreationDate = config.PdfMetadata.AddCreationDate,
+            CompressContent = config.PdfMetadata.CompressContent
+        };
+    }
 }

@@ -36,4 +36,13 @@
 		<!-- Letter: 216 x 279 мм -->
 		<!-- Legal: 216 x 356 мм -->
 	</PageSize>
+	
+	<PdfMetadata>
+		<Author>Vlad</Author>
+		<Creator>PDFshark</Creator>
+		<Keywords>scan, pdf, document</Keywords>
+		<Subject>Скан документа</Subject>
+		<AddCreationDate>true</AddCreationDate>
+		<CompressContent>false</CompressContent>
+	</PdfMetadata>
 </Configuration>
