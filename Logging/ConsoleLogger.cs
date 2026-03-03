@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace DocToScan.Logging;
 
 /// <summary>
-/// Реализация логгера, выводящего сообщения в консоль с цветовым форматированием.
+/// Реализация логгера, выводящего сообщения в консоль.
 /// </summary>
 public class ConsoleLogger : ILogger
 {
@@ -13,72 +12,70 @@ public class ConsoleLogger : ILogger
     /// <summary>
     /// Инициализирует новый экземпляр класса ConsoleLogger.
     /// </summary>
-    public ConsoleLogger()
+    /// <param name="debugMode">Включить отладочный режим.</param>
+    public ConsoleLogger(bool debugMode = false)
     {
-#if DEBUG
-        _isDebugMode = true;
-#endif
+        _isDebugMode = debugMode;
+
+        // Настраиваем кодировку консоли для поддержки UTF-8
+        try
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+        }
+        catch
+        {
+            // Игнорируем ошибки кодировки
+        }
     }
 
-    /// <summary>
-    /// Записывает информационное сообщение белым цветом.
-    /// </summary>
+    /// <inheritdoc />
     public void Info(string message)
     {
+        Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine(message);
+        Console.ResetColor();
     }
 
-    /// <summary>
-    /// Записывает сообщение об ошибке красным цветом.
-    /// </summary>
-    public void Error(string message)
-    {
-        var previousColor = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.ForegroundColor = previousColor;
-    }
-
-    /// <summary>
-    /// Записывает предупреждение желтым цветом.
-    /// </summary>
-    public void Warning(string message)
-    {
-        var previousColor = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine(message);
-        Console.ForegroundColor = previousColor;
-    }
-
-    /// <summary>
-    /// Записывает сообщение об успехе зеленым цветом.
-    /// </summary>
+    /// <inheritdoc />
     public void Success(string message)
     {
-        var previousColor = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(message);
-        Console.ForegroundColor = previousColor;
+        Console.ResetColor();
     }
 
-    /// <summary>
-    /// Записывает отладочное сообщение серым цветом только в Debug режиме.
-    /// </summary>
+    /// <inheritdoc />
+    public void Warning(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    /// <inheritdoc />
+    public void Error(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    /// <inheritdoc />
     public void Debug(string message)
     {
-        if (!_isDebugMode) return;
-
-        var previousColor = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.WriteLine($"[DEBUG] {message}");
-        Console.ForegroundColor = previousColor;
+        if (_isDebugMode)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"[DEBUG] {message}");
+            Console.ResetColor();
+        }
     }
 
-    /// <summary>
-    /// Записывает разделитель из 55 символов.
-    /// </summary>
+    /// <inheritdoc />
     public void Separator()
     {
+        Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.WriteLine(new string('─', 55));
+        Console.ResetColor();
     }
 }
