@@ -2,7 +2,6 @@
 ![.NET 10.0](https://img.shields.io/badge/.NET-10.0-512BD4)
 ![Windows](https://img.shields.io/badge/Windows-10/11-0078D6)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 **DocToScan** — утилита для преобразования документов (PDF, DOCX) в стилизованные "скан-копии" с эффектами старого сканера: регулировка яркости, случайный поворот страниц, чёрно-белый режим и обрезка до заданного формата (A4, A3, Letter, Legal).
 
