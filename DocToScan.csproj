@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<Platforms>x64;AnyCPU</Platforms>
+		<Platforms>x64</Platforms>
 		<AssemblyName>DocToScan</AssemblyName>
 		<RootNamespace>DocToScan</RootNamespace>
-		<NoWarn>NU1701;NU1603;MSB3277</NoWarn>
+		<NoWarn>NU1701;NU1603;MSB3277;CA1416;NU1510;CS0618</NoWarn>
 		<EnableComHosting>true</EnableComHosting>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<EmbedInteropTypes>true</EmbedInteropTypes>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+		<ApplicationIcon>assets/icons/app_icon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<!-- Основные пакеты -->
@@ -26,53 +26,41 @@
 		<PackageReference Include="PdfiumViewer.Native.x86_64.v8-xfa" Version="2018.4.8.256" />
 	</ItemGroup>
 
-	<!-- Добавляем COM Reference вручную -->
+	<!-- ВАЖНО: Microsoft.Office.Interop.Word через NuGet -->
 	<ItemGroup>
-		<COMReference Include="Microsoft.Office.Interop.Word">
-			<Guid>{00020905-0000-0000-C000-000000000046}</Guid>
-			<VersionMajor>8</VersionMajor>
-			<VersionMinor>7</VersionMinor>
-			<WrapperTool>tlbimp</WrapperTool>
-			<Lcid>0</Lcid>
-			<Isolated>false</Isolated>
+		<PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004">
 			<EmbedInteropTypes>true</EmbedInteropTypes>
-		</COMReference>
+		</PackageReference>
 	</ItemGroup>
 
 	<!-- Конфигурации сборки -->
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-		<DebugType>portable</DebugType>
-		<DebugSymbols>true</DebugSymbols>
-		<Optimize>false</Optimize>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<DebugType>none</DebugType>
 		<DebugSymbols>false</DebugSymbols>
 		<Optimize>true</Optimize>
 		<PublishSingleFile>true</PublishSingleFile>
-		<SelfContained>false</SelfContained>
+		<SelfContained>true</SelfContained>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<!-- Отключаем предупреждения о платформе, так как приложение только для Windows -->
-		<NoWarn>NU1701;NU1603;MSB3277;CA1416;NU1510;CS0618</NoWarn>
+		<!--<NoWarn>NU1701;NU1603;MSB3277;CA1416;NU1510;CS0618</NoWarn>-->
 	</PropertyGroup>
-
+	
 	<ItemGroup>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Resources.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<!-- Файлы для копирования -->
@@ -81,5 +69,4 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-
 </Project>

@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+        <Version>1.0.0</Version>
+        <Authors>Vlad and DS</Authors>
+        <Company>DocToScan</Company>
+        <Product>DocToScan</Product>
+        <Copyright>Copyright © 2026</Copyright>
+    </PropertyGroup>
+</Project>
