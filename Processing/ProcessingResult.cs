@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO; // Добавить эту строку
+using System.IO;
 
 namespace DocToScan.Processing;
 
