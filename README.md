@@ -94,6 +94,15 @@ DocToScan.exe "C:\Docs\report.docx" "C:\Docs\scan.pdf"
     <WidthMm>210</WidthMm>      <!-- A4 ширина -->
     <HeightMm>297</HeightMm>    <!-- A4 высота -->
   </PageSize>
+
+  <PdfMetadata>                 <!-- Метаданные файлов-результатов работы -->
+    <Author>Vlad</Author>       <!-- Имя автора документа, может быть именем пользователя компьютера -->
+    <Creator>DocToScan</Creator>        <!-- Приложение, создавшее файл. Можно задать любое, чтобы скрыть следы утилиты --> 
+    <Keywords>scan, pdf, document</Keywords>    <!-- Ключевые слова для работы с документами -->
+    <Subject>Скан документа</Subject>           <!-- Тема файла -->
+    <AddCreationDate>true</AddCreationDate>     <!-- Надо ли добавлять дату создания файла -->
+    <CompressContent>false</CompressContent>    <!-- Надо ли сжимать содержимое документа -->
+  </PdfMetadata>
 </Configuration>
 ```
 
