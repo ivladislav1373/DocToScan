@@ -1,132 +1,70 @@
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-[Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
-
-# Visual Studio files
+# IDE - Visual Studio
 .vs/
-*.suo
+.idea/
 *.user
+*.suo
 *.userosscache
 *.sln.docstates
-*.idea/
-*.swp
-*.swo
-*.*.user
-*.userprefs
 
-# Profiling
-*.psess
-*.vsp
-*.vspx
-*.sap
+# Build outputs
+bin/
+obj/
+builds/
+publish_output/
+*.exe
+*.dll
+*.pdb
+*.xml
+*.exe.config
+*.dll.config
+
+# Package files
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+
+# Logs and temp
+logs/
+*.log
+*.tmp
+Temp/
+
+# User-specific files
+*.userprefs
+*.DS_Store
+
+# Configuration - сохраняем шаблоны, но не личные копии
+appsettings.Development.json
+secrets.json
+
+# Но сохраняем важные конфиги и скрипты (они уже в репозитории)
+# config.xml - сохраняем (это шаблон)
+# scripts/*.bat - сохраняем
+# scripts/*.ps1 - сохраняем
+# Directory.Build.props - сохраняем
 
 # Test results
 TestResults/
 *.trx
-*.tmp
-*.log
-*.html
 
-# NuGet packages
-packages/
-*.nupkg
-project.lock.json
-project.fragment.lock.json
-*.nuget.props
-*.nuget.targets
-
-# Output files
-*.dll
-*.exe
-*.pdb
+# Native libraries (но pdfium.dll будет в сборке, не в исходниках)
 *.so
 *.dylib
-*.app
-*.zip
-*.7z
-*.exe.config
+*.dll.lib
+*.dll.exp
 
-# Logs and databases
-*.log
-*.sqlite
-*.db
-*.mdf
-*.ldf
-
-# Coverage files
-*.coverage
-*.coveragexml
-
-# Publish output
-publish/
-PublishScripts/
-
-# Local config files
-appsettings.local.json
-config.local.xml
-*.local.config
-
-# User-specific files
-*.rsuser
-*.tmp_proj
-*.pidb
-*.svclog
-*.scc
-
-# Auto-generated XML documentation
-*.xml
-
-# Mac OS
-.DS_Store
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Office Interop (не храним сгенерированные)
+Interop.*
 
 # Windows specific
+Thumbs.db
 desktop.ini
 $RECYCLE.BIN/
 
-# Rider IDE
-.idea/
-*.sln.iml
-
-# Tooling
-.tools/
-.temp/
-temp/
-tmp/
-
-# Keep config.xml example but not actual config
-config.xml
-!assets/config/default-config.xml
-
-# Keep source but not built versions
-src/**/bin/
-src/**/obj/
-tests/**/bin/
-tests/**/obj/
-
-# Exclude large files
-*.zip
-*.7z
-*.rar
-*.tar.gz
-*.iso
-*.msi
-*.exe
-!scripts/**/*.bat
-!scripts/**/*.ps1
+# Прочее
+*.bak
+*.old
+*.orig
+*.swp
+*~
