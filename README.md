@@ -70,7 +70,7 @@ DocToScan.exe "C:\Docs\report.docx" "C:\Docs\scan.pdf"
 ```xml
 <Configuration>
   <Brightness>
-    <Enable>true</Enable>
+    <Enable>true</Enable>       <!-- Здесь и дальше – включить ли опцию: true/false -->
     <Level>15</Level>           <!-- от -255 до 255 -->
   </Brightness>
   
