@@ -30,7 +30,7 @@
 
 ```powershell
 # Клонируйте репозиторий
-git clone https://github.com/yourname/DocToScan.git
+git clone https://github.com/ivladislav1373/DocToScan.git
 cd DocToScan
 
 # Запустите скрипт сборки
