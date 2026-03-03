@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "DocToScan": {
+      "commandName": "Project",
+      "commandLineArgs": "",
+      "workingDirectory": "$(ProjectDir)"
+    },
+    "DocToScan with test file": {
+      "commandName": "Project",
+      "commandLineArgs": "\"test.docx\"",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

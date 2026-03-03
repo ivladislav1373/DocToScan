@@ -1,0 +1,132 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.idea/
+*.swp
+*.swo
+*.*.user
+*.userprefs
+
+# Profiling
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Test results
+TestResults/
+*.trx
+*.tmp
+*.log
+*.html
+
+# NuGet packages
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+
+# Output files
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+*.app
+*.zip
+*.7z
+*.exe.config
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+*.mdf
+*.ldf
+
+# Coverage files
+*.coverage
+*.coveragexml
+
+# Publish output
+publish/
+PublishScripts/
+
+# Local config files
+appsettings.local.json
+config.local.xml
+*.local.config
+
+# User-specific files
+*.rsuser
+*.tmp_proj
+*.pidb
+*.svclog
+*.scc
+
+# Auto-generated XML documentation
+*.xml
+
+# Mac OS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows specific
+desktop.ini
+$RECYCLE.BIN/
+
+# Rider IDE
+.idea/
+*.sln.iml
+
+# Tooling
+.tools/
+.temp/
+temp/
+tmp/
+
+# Keep config.xml example but not actual config
+config.xml
+!assets/config/default-config.xml
+
+# Keep source but not built versions
+src/**/bin/
+src/**/obj/
+tests/**/bin/
+tests/**/obj/
+
+# Exclude large files
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.iso
+*.msi
+*.exe
+!scripts/**/*.bat
+!scripts/**/*.ps1
